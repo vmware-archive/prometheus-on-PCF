@@ -11,6 +11,7 @@ inputs:
 
 params:
   pcf_ert_domain:
+  pcf_bosh_director_hostname:
   pcf_opsman_admin_username:
   pcf_opsman_admin_password:
   pcf_sys_domain:

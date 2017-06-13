@@ -30,16 +30,20 @@ uaac client add ${prometheus_cf_client} \
   --authorized_grant_types client_credentials,refresh_token \
   --authorities cloud_controller.admin || true
 
-echo "Getting BOSH director IP..."
+echo "Getting BOSH director URI..."
 director_id=$($CURL --path=/api/v0/deployed/products | jq -r ".[].guid" | grep p-bosh)
-director_ip=$($CURL --path=/api/v0/deployed/products/$director_id/static_ips | jq -r .[0].ips[0])
+if [ -z "$pcf_bosh_director_hostname" ]; then
+  director_uri=$($CURL --path=/api/v0/deployed/products/$director_id/static_ips | jq -r .[0].ips[0])
+else
+  director_uri=${pcf_bosh_director_hostname}
+fi
 
 echo "Getting BOSH UAA creds..."
 uaa_login_password=$($CURL --path=/api/v0/deployed/products/$director_id/credentials/.director.uaa_login_client_credentials | jq -r .credential.value.password)
 uaa_admin_password=$($CURL --path=/api/v0/deployed/director/credentials/uaa_admin_user_credentials | jq -r .credential.value.password)
 
 echo "Logging into BOSH UAA..."
-uaac target https://$director_ip:8443 --skip-ssl-validation
+uaac target https://$director_uri:8443 --skip-ssl-validation
 uaac token owner get login -s $uaa_login_password<<EOF
 admin
 $uaa_admin_password
