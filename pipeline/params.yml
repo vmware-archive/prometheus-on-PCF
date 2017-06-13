@@ -3,6 +3,9 @@ pcf_opsman_admin_username: user
 pcf_opsman_admin_password: password
 opsman_url: opsman.doma.in
 
+# Set if you use a hostname for bosh director (for PCF foundation)
+pcf_bosh_director_hostname:
+
 # Elastic Runtime Domain
 pcf_ert_domain: doma.in
 
