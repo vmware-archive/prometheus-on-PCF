@@ -129,7 +129,7 @@ instance_groups:
             metrics_path: /probe
             params:
               module:
-                - http
+                - http_2xx
             static_configs:
               - targets:
                 - ((cf_exporter.cf.api_url))
