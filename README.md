@@ -40,7 +40,7 @@ uaac client add prometheus-firehose \
 
 uaac client add prometheus-cf \
   --name prometheus-cf \
-  --secret prometheus-cf-client-secret \
+  --secret prometheus-client-secret \
   --authorized_grant_types client_credentials,refresh_token \
   --authorities cloud_controller.admin
 ```
