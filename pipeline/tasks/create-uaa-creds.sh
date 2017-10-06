@@ -7,7 +7,7 @@ CURL="om --target https://${opsman_url} -k \
   curl"
 
 echo "Getting UAA credentials..."
-cf_id=$($CURL --path=/api/v0/deployed/products | jq -r ".[].guid" | grep cf-)
+cf_id=$($CURL --path=/api/v0/deployed/products | jq -r ".[].guid" | grep "^cf-")
 
 uaa_creds=$($CURL --path=/api/v0/deployed/products/$cf_id/credentials/.uaa.admin_client_credentials)
 
