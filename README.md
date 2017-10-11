@@ -2,7 +2,7 @@
 
 This how-to has been tested on PCF 1.8, 1.9 and 1.10. The manifest file is appropriate for cloud-config enabled environments.
 
-The manifest example is split into the main part which should not require any customization (at least initially) and the local configuration which has to be adjusted. To merge those files we are using the new [BOSH CLI (beta)](https://github.com/cloudfoundry/bosh-cli). Documentation is available [here](http://bosh.io/docs/cli-v2.html). It is perfectly possible to use this CLI for all other steps involving a BOSH CLI.
+The manifest example is split into the main part which should not require any customization (at least initially) and the local configuration which has to be adjusted. To merge those files we are using the new [BOSH CLI](https://github.com/cloudfoundry/bosh-cli). Documentation is available [here](http://bosh.io/docs/cli-v2.html).
 
 # How it works
 This is a high-level overview of monitoring Cloud Foundry with Prometheus
@@ -18,9 +18,12 @@ Notes:
 ## Upload the bosh releases to your BOSH Director
 
 ```
-bosh --ca-cert root_ca_certificate target <YOUR_BOSH_HOST>
-bosh upload release https://bosh.io/d/github.com/cloudfoundry-community/prometheus-boshrelease
-bosh upload release https://github.com/cloudfoundry-community/node-exporter-boshrelease/releases/download/v1.1.0/node-exporter-1.1.0.tgz
+# if you have not targeted this environment before do the following:
+bosh -e <YOUR_BOSH_HOST> --ca-cert root_ca_certificate alias-env myenv
+bosh -e myenv login
+# now you can upload the releases:
+bosh -e myenv upload-release https://bosh.io/d/github.com/cloudfoundry-community/prometheus-boshrelease
+bosh -e myenv upload-release https://github.com/cloudfoundry-community/node-exporter-boshrelease/releases/download/v1.1.0/node-exporter-1.1.0.tgz
 ```
 You can find root_ca_certificate file on the OpsManager VM in ```/var/tempest/workspaces/default/root_ca_certificate```.
 
@@ -64,7 +67,7 @@ Edit name and secret values. You will need to put them in the manifest later.
 ## Create MySQL user
 Given that PCF uses MySQL internally you should also monitor it. To do that, create a MySQL user and configure it in local.yml later.
 ```
-bosh ssh mysql
+bosh -e myenv -d cf-........ ssh mysql/0
 mysql -u root -p
 Enter password: (OpsManager -> ERT -> Credentials -> Mysql Admin Credentials)
 CREATE USER 'exporter' IDENTIFIED BY 'CHANGE_ME';
@@ -79,12 +82,11 @@ Since prometheus.yml is changing often to add more functionality (or to adjust i
 * Edit CHANGE_ME and other placeholders
 * Merge the two files:
 ```
-bosh-cli interpolate prometheus.yml -l local.yml > manifest.yml
+bosh interpolate prometheus.yml -l local.yml > manifest.yml
 ```
 * Once the manifest is ready, deploy:
 ```
-bosh deployment manifest.yml
-bosh -n deploy
+bosh -d prometheus deploy manifest.yml
 ```
 To generate VM passwords you can use:
 ```
@@ -102,10 +104,9 @@ mkpasswd -s -m sha-512
 ## Deploy node_exporter on all nodes
 node_exporter is a core Prometheus exporter which provides detailed OS-level information. Using BOSH add-ons feature it's very easy to install node_exporter on all BOSH-provisioned VMs. Take the example runtime.yml (adjust the prometheus release version if needed) and run:
 ```
-bosh update runtime-config runtime.yml
-bosh -n deploy
+bosh -e myenv update-runtime-config runtime.yml
 ```
-Once that's done, any VM (re)created by BOSH will be running node_exporter. The manifest is already prepared to consume that data.
+From now on, any VM (re)created by BOSH will be running node_exporter. The manifest is already prepared to consume that data.
 
 ## Connect to Grafana
 If the deployment was successful use ```bosh vms``` to find out the IP address of your nginx server. Then connect:
