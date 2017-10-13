@@ -283,14 +283,14 @@ instance_groups:
         metrics:
           environment: cf
         skip_ssl_verify: true
-  - name: mysqld_exporter
-    release: prometheus
-    properties:
-      mysqld_exporter:
-        mysql:
-          address: ((mysqld_exporter.mysql.address))
-          username: ((mysqld_exporter.mysql.username))
-          password: ((mysqld_exporter.mysql.password))
+  #- name: mysqld_exporter
+  #  release: prometheus
+  #  properties:
+  #    mysqld_exporter:
+  #      mysql:
+  #        address: ((mysqld_exporter.mysql.address))
+  #        username: ((mysqld_exporter.mysql.username))
+  #        password: ((mysqld_exporter.mysql.password))
   - name: firehose_exporter
     release: prometheus
     properties:
