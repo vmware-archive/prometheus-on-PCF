@@ -16,7 +16,7 @@ resources:
 - name: prometheus-release
   type: github-release
   source:
-    user: cloudfoundry-community
+    user: bosh-prometheus
     repository: prometheus-boshrelease
     access_token: {{github_token}}
 - name: prometheus-custom-release
@@ -28,7 +28,7 @@ resources:
 - name: node-exporter-release
   type: github-release
   source:
-    user: cloudfoundry-community
+    user: bosh-prometheus
     repository: node-exporter-boshrelease
     access_token: {{github_token}}
 - name: pcf-bosh-creds

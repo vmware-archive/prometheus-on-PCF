@@ -22,16 +22,16 @@ Notes:
 bosh -e <YOUR_BOSH_HOST> --ca-cert root_ca_certificate alias-env myenv
 bosh -e myenv login
 # now you can upload the releases:
-bosh -e myenv upload-release https://bosh.io/d/github.com/cloudfoundry-community/prometheus-boshrelease
-bosh -e myenv upload-release https://github.com/cloudfoundry-community/node-exporter-boshrelease/releases/download/v1.1.0/node-exporter-1.1.0.tgz
+bosh -e myenv upload-release https://bosh.io/d/github.com/bosh-prometheus/prometheus-boshrelease
+bosh -e myenv upload-release https://github.com/bosh-prometheus/node-exporter-boshrelease/releases/download/v3.0.0/node-exporter-3.0.0.tgz
 ```
 You can find root_ca_certificate file on the OpsManager VM in ```/var/tempest/workspaces/default/root_ca_certificate```.
 
 ## Create UAA clients
-Key components of this BOSH release are [firehose_exporter](https://github.com/cloudfoundry-community/firehose_exporter),  [bosh_exporter](https://github.com/cloudfoundry-community/bosh_exporter) and [cf_exporter](https://github.com/cloudfoundry-community/cf_exporter/) which retrieve the data (from CF firehose, BOSH director and Cloud Controller API respectively) and present it in the Prometheus format. Each of those exporters require credentials to access the data source. IMPORTANT: these users have to be created in two different UAA instances. For the firehose and CF credentials, you use the main UAA instance of a Cloud Foundry deployment (where you would normally create users/clients, such as those for any other nozzles). For bosh_exporter however, you need to use the UAA which is colocated with the BOSH Director.
+Key components of this BOSH release are [firehose_exporter](https://github.com/bosh-prometheus/firehose_exporter),  [bosh_exporter](https://github.com/bosh-prometheus/bosh_exporter) and [cf_exporter](https://github.com/bosh-prometheus/cf_exporter/) which retrieve the data (from CF firehose, BOSH director and Cloud Controller API respectively) and present it in the Prometheus format. Each of those exporters require credentials to access the data source. IMPORTANT: these users have to be created in two different UAA instances. For the firehose and CF credentials, you use the main UAA instance of a Cloud Foundry deployment (where you would normally create users/clients, such as those for any other nozzles). For bosh_exporter however, you need to use the UAA which is colocated with the BOSH Director.
 
 ### Create clients for firehose_exporter and cf_exporter
-This process is explained here: https://github.com/cloudfoundry-community/firehose_exporter
+This process is explained here: https://github.com/bosh-prometheus/firehose_exporter
 ```bash
 uaac target https://uaa.SYSTEM_DOMAIN --skip-ssl-validation
 uaac token client get admin -s <YOUR ADMIN CLIENT SECRET>
@@ -113,10 +113,10 @@ If the deployment was successful use ```bosh vms``` to find out the IP address o
 * https://NGINX:3000 to access Grafana (default credentials: admin/CHANGE_ME)
 * https://NGINX:9090 to access Prometheus
 
-There is a number of ready to use Dashboards that should install automatically. You can edit them in Grafana or create your own. They are coming from [prometheus-boshrelease/src](https://github.com/cloudfoundry-community/prometheus-boshrelease/tree/master/src).
+There is a number of ready to use Dashboards that should install automatically. You can edit them in Grafana or create your own. They are coming from [prometheus-boshrelease/src](https://github.com/bosh-prometheus/prometheus-boshrelease/tree/master/src).
 
 ## Alertmanager
-The `prometheus-boshrelease` does include some predefined alerts for CloudFoundry as well as for BOSH. You can find the alert definitions in [prometheus-boshrelease/src](https://github.com/cloudfoundry-community/prometheus-boshrelease/tree/master/src). Check the `*.alerts` rule files in the corresponding folders. If you create new alerts make sure to add them to the `prometheus.yml` -  the path to the alert rule file as well as a job release for additional new exporters.
+The `prometheus-boshrelease` does include some predefined alerts for CloudFoundry as well as for BOSH. You can find the alert definitions in [prometheus-boshrelease/src](https://github.com/bosh-prometheus/prometheus-boshrelease/tree/master/src). Check the `*.alerts` rule files in the corresponding folders. If you create new alerts make sure to add them to the `prometheus.yml` -  the path to the alert rule file as well as a job release for additional new exporters.
 Access the AlertManager to see active alerts or silence them:
 * https://NGINX:9093
 
