@@ -1,6 +1,9 @@
+**DEPRECATED**
+For PCF 1.12+ please use the new pipeline available here: [https://github.com/pivotal-cf/pcf-prometheus-pipeline](https://github.com/pivotal-cf/pcf-prometheus-pipeline). This repo will remain here for the time being but please migrate to the new pipeline as soon as possible.
+
 # Prometheus BOSH release on Pivotal Cloud Foundry
 
-This how-to has been tested on PCF 1.8, 1.9 and 1.10. The manifest file is appropriate for cloud-config enabled environments.
+This how-to has been tested on PCF 1.8-1.11. The manifest file is appropriate for cloud-config enabled environments.
 
 The manifest example is split into the main part which should not require any customization (at least initially) and the local configuration which has to be adjusted. To merge those files we are using the new [BOSH CLI](https://github.com/cloudfoundry/bosh-cli). Documentation is available [here](http://bosh.io/docs/cli-v2.html).
 
