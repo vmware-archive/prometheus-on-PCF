@@ -1,5 +1,6 @@
 **DEPRECATED**
-For PCF 1.12+ please use the new pipeline available here: [https://github.com/pivotal-cf/pcf-prometheus-pipeline](https://github.com/pivotal-cf/pcf-prometheus-pipeline). This repo will remain here for the time being but please migrate to the new pipeline as soon as possible.
+
+**For PCF 1.12+ please use the new pipeline available here: [https://github.com/pivotal-cf/pcf-prometheus-pipeline](https://github.com/pivotal-cf/pcf-prometheus-pipeline). This repo will remain here for the time being but please migrate to the new pipeline as soon as possible.**
 
 # Prometheus BOSH release on Pivotal Cloud Foundry
 
