@@ -230,10 +230,6 @@ instance_groups:
             static_configs:
               - targets:
                 - localhost:9121
-          - job_name: statsd
-            static_configs:
-              - targets:
-                - localhost:9102
   - name: bosh_alerts
     release: prometheus-custom
   - name: cloudfoundry_alerts
@@ -333,8 +329,6 @@ instance_groups:
   - name: rabbitmq_exporter
     release: prometheus
   - name: redis_exporter
-    release: prometheus
-  - name: statsd_exporter
     release: prometheus
   env:
     bosh:
